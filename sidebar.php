@@ -1,23 +1,26 @@
-<?php include('db.php') ?>
+<html>
+    <aside class="col-sm-3 ml-sm-auto blog-sidebar">
+            <div class="sidebar-module sidebar-module-inset">
 
-<?php
-$sql = "select * from posts ORDER BY Created_at DESC LIMIT 5;";
-$statement = $connection->prepare($sql);
-$statement->execute();
-$statement->setFetchMode(PDO::FETCH_ASSOC);
-$ads = $statement->fetchAll();
-?>
+            <?php 
+            
+            $sqlAside = "SELECT * FROM posts ORDER BY Created_at DESC LIMIT 5";
+            $statement = $connection->prepare($sqlAside);
+            $statement->execute();
+            $statement->setFetchMode(PDO::FETCH_ASSOC);
+            $posts = $statement->fetchAll();
+            
+            ?>
+                <h4>Latest posts</h4>
+                <?php 
+                $i = 0;
+                foreach ($posts as $post) {
+                    $i++;
+                ?>
 
-<aside class="col-sm-3 ml-sm-auto blog-sidebar">
+            <a class="side-bar-5-links" href="single-post.php?post_id=<?php echo $post['Id']?>"> <?php echo $i . ". "?> <?php echo $post['Title']?> </a><br>
 
-<div class="sidebar-module sidebar-module-inset">
-                <b><h3>Latest posts</h3></b>
-
-                <?php foreach ($ads as $value) {  ?>
-                   <i> <a href = 'single-post.php?postId=<?php echo $value['Id']; ?>'> <h5><?php echo $value['Title'] ?></h5></a></i>
                 <?php } ?>
             </div>
-
-            
-        
-</aside><!-- /.blog-sidebar -->
+    </aside>
+</html>

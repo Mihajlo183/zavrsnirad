@@ -1,34 +1,89 @@
-<title>Sample blog post</title>
 <?php
-    $postId = -1;
-    if (isset($_GET['postId'])) {
-        $postId = $_GET['postId'];
-    }
+include "db.php";
 ?>
 
-<?php include "db.php"?>
-<?php
-$sql = "select * from posts where Id=$postId;";
-$statement = $connection->prepare($sql);
-$statement->execute();
 
-$statement->setFetchMode(PDO::FETCH_ASSOC);
-$post = $statement->fetch();
-?>
+<!doctype html>
+<html lang="en">
+    <head>
 
-<?php include 'header.php';?>
- 
-<div> <?php echo $post['Title'] ?> </div> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../../../../favicon.ico">
 
-<div class="row">
-    <div class="col-sm-8 blog-main">
-        <?php echo $post['Body'] ?>
+        <title>Vivify Blog</title>
 
-        <?php include 'coments.php';?>
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
-        <?php include 'sidebar.php';?>
+        <!-- Custom styles for this template -->
+        <link href="styles/blog.css" rel="stylesheet">
+        <link href="styles/styles.css" rel="stylesheet">
+    </head>
+
+    <?php include "header.php" ?>
+
+    <body>
+    <main role="main" class="container">
+        
+            <?php
+                if(isset ($_GET['post_id'])) {
+                $sql = "SELECT id, title, body, author, created_at FROM posts WHERE posts.id = {$_GET['post_id']}";
+                $statement = $connection->prepare($sql);
+                $statement-> execute();
+                $statement->setFetchMode(PDO::FETCH_ASSOC);
+                $singlePost = $statement->fetch();
+                }
+            ?>
+    <div class="blog-post">
+                <h2 class="blog-post-title"><a href="single-post.php?post_id=<?php echo $singlePost['id']?>"><?php echo $singlePost['title']?></a></h2>
+                <p class="blog-post-meta"><?php echo $singlePost['created_at'] ?> by <?php echo $singlePost['author'] ?></p>
+                <p><?php echo $singlePost['body']?></p>
+
+                <form class="deletePost" method = "GET" action="delete-post.php" name="deletePostForm">
+                    <input class="btn btn-primary" type="submit" value="Delete post" id="deletePost">
+                    <input type="hidden" value="<?php echo $singlePost['id']; ?>" name="id">
+                </form>
+            <script>
+                document.getElementById("deletePost").addEventListener("click", function(event) {
+                    event.preventDefault();
+                    if(window.confirm("Do you really want to delete this post?")) {
+                        document.deletePostForm.submit();
+                    }
+                });
+            </script>
     </div>
 
-</div>  
-<?php include 'footer.php';?>
+    <div class="comments">
+        <h3>Add comment</h3>
+        <?php 
+            $error = "";
+            if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['error'])) {
+                $error = "All fields are required!";
+            }
+        ?>
+    <form class="form" method="post" action="create-comment.php">
+        
+    <?php if(!empty($error)) { ?>
+            <span class = "alert alert-danger">
+                <?php echo $error ?>
+            </span>
+        <?php } ?>
+        
+        <input name="author" type="text" placeholder="Author"  style="display:block; margin-bottom:1rem; padding:0.5rem">
+        <textarea name="comment" rows="5" cols="70" placeholder="Comment"  style="display:block; margin-bottom:1rem"></textarea>
+        <input type="hidden" value = "<?php echo $_GET['post_id'] ?>" name="id">
+        <input class = "btn btn-deafult" type="submit" value="Add">
+    </form>
 
+    <h3 class="comment-list-headline">Comment list</h3>
+    <?php include "comments.php" ?>
+    </div>
+
+    
+    <?php include "footer.php" ?>
+    </main>
+    </body>
+</html>
