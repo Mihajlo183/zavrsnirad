@@ -1,9 +1,9 @@
 <html>
-    <aside class="col-sm-3 ml-sm-auto blog-sidebar">
+    <!-- <aside class="col-sm-3 ml-sm-auto blog-sidebar"> -->
             <div class="sidebar-module sidebar-module-inset">
 
             <?php 
-            
+            include "db.php";
             $sqlAside = "SELECT * FROM posts ORDER BY Created_at DESC LIMIT 5";
             $statement = $connection->prepare($sqlAside);
             $statement->execute();
@@ -22,5 +22,5 @@
 
                 <?php } ?>
             </div>
-    </aside>
+    <!-- </aside> -->
 </html>

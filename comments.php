@@ -14,10 +14,11 @@ $comments = $statement->fetchAll();
             <div> Posted by: <?php echo $comment['Author'] ?> </div>
             <div> Comment: <?php echo $comment['Text'] ?> </div>
         </li>
-        <form action="delete-comment.php" method="GET">
+        <!-- <form action="delete-comment.php" method="GET"> -->
+        <form action="delete-comment.php?id=<?php echo $comment['id'] ?>&post_id=<?php echo $comment['Post_Id'] ?>" method="GET">
             <input class="btn btn-default" type="submit" value="Delete">
-            <input type="hidden" value="<?php echo $comment['id'] ?>" name="id">
-            <input type="hidden" value="<?php echo $comment['post_id'] ?>" name = "post_id">
+            <input type="hidden" value="<?php echo $comment['Id'] ?>" name="id">
+            <input type="hidden" value="<?php echo $comment['Post_Id'] ?>" name="post_id">
             <hr>
         </form>
         <?php } ?>

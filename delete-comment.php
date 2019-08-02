@@ -8,4 +8,3 @@ $statementDelete->execute();
 $statementDelete->setFetchMode(PDO::FETCH_ASSOC);
 header("Location: single-post.php?post_id=$post_id");
 ?>
-

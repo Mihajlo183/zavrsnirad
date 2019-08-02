@@ -27,7 +27,8 @@ include "db.php";
 
     <body>
     <main role="main" class="container">
-        
+    <div class="row">
+    <div class="col-sm-8 blog-main">
             <?php
                 if(isset ($_GET['post_id'])) {
                 $sql = "SELECT id, title, body, author, created_at FROM posts WHERE posts.id = {$_GET['post_id']}";
@@ -42,7 +43,7 @@ include "db.php";
                 <p class="blog-post-meta"><?php echo $singlePost['created_at'] ?> by <?php echo $singlePost['author'] ?></p>
                 <p><?php echo $singlePost['body']?></p>
 
-                <form class="deletePost" method = "GET" action="delete-post.php" name="deletePostForm">
+                <form class="eletPost" method = "GET" action="delete-post.php" name="deletePostForm">
                     <input class="btn btn-primary" type="submit" value="Delete post" id="deletePost">
                     <input type="hidden" value="<?php echo $singlePost['id']; ?>" name="id">
                 </form>
@@ -73,17 +74,20 @@ include "db.php";
         <?php } ?>
         
         <input name="author" type="text" placeholder="Author"  style="display:block; margin-bottom:1rem; padding:0.5rem">
-        <textarea name="comment" rows="5" cols="70" placeholder="Comment"  style="display:block; margin-bottom:1rem"></textarea>
+        <textarea name="comment" rows="4" cols="50" placeholder="Comment" style="display:block; margin-bottom:1rem"></textarea>
         <input type="hidden" value = "<?php echo $_GET['post_id'] ?>" name="id">
-        <input class = "btn btn-deafult" type="submit" value="Add">
+        <input class = "btn btn-deafult" type="submit" value="Submit">
     </form>
 
     <h3 class="comment-list-headline">Comment list</h3>
     <?php include "comments.php" ?>
     </div>
-
-    
+    </div>
+    <?php include "sidebar.php" ?>
+    </div>
     <?php include "footer.php" ?>
     </main>
     </body>
+
+
 </html>

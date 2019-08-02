@@ -21,6 +21,9 @@
     <?php include "header.php"; ?>
 
     <main role="main" class="container">
+    <div class="row">
+    <div class="col-sm-8 blog-main">
+    
         <?php
             $error = '';
             if($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['error'])) {
@@ -34,9 +37,14 @@
                 </span>
             <?php } ?>
                 <input name="title" type="text" placeholder="Title" style="display:block; margin-bottom:1rem; padding:0.5rem">
-                <textarea name="post" rows="5" cols="70" placeholder="Your post"  style="display:block; margin-bottom:1rem"></textarea>
+                <textarea name="post" rows="10" cols="50" placeholder="Your post"></textarea>
                 <input name="author" type="text" placeholder="Author"  style="display:block; margin-bottom:1rem; padding:0.5rem"/>
-                <input class="btn btn-default" type="submit" value="Add post">
+                <input class="btn btn-default" type="submit" value="Submit">
         </form>
+    </div>
+    <?php include "sidebar.php"?>
+    </div>
     </main>
+
+    <?php include "footer.php" ?>
 </html>
